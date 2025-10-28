@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, useId } from 'vue'
+import { ref } from 'vue'
 
 const index = ref(0);
 
@@ -26,14 +26,6 @@ function createTodo() {
     completed: false,
   })
 }
-
-function toggleComplete(id: number) {
-  todos.value.forEach((todo) => {
-    if (todo.id === id) {
-      todo.completed = !todo.completed
-    }
-  })
-}
 </script>
 
 <template>
@@ -44,8 +36,7 @@ function toggleComplete(id: number) {
           <input
             data-testid="todo-checkbox"
             type="checkbox"
-            :value="todo.completed"
-            @change="toggleComplete(todo.id)"
+            v-model="todo.completed"
           />
           {{ todo.text }}
         </label>
