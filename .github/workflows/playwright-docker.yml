@@ -26,10 +26,5 @@ jobs:
         run: npm ci
       - name: Install dependencies
         run: npm run build-only
-      - name: Start preview server
-        run: |
-          npm run preview &
-          npx wait-on http://localhost:4173
-        # The wait-on ensures the server is ready before tests start
       - name: Run your tests
         run: npx playwright test
