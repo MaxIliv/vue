@@ -13,6 +13,9 @@ jobs:
     - uses: actions/setup-node@v5
       with:
         node-version: lts/*
+    - name: Playwright version
+      id: playwright-version
+      run: echo "version=$(npx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
     - name: Cache Node modules
       id: node_modules
       uses: actions/cache@v4
@@ -22,12 +25,13 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
+
     - name: Cache Playwright browsers
       id: playwright_browsers
       uses: actions/cache@v4
       with:
         path: ~/.cache/ms-playwright
-        key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+        key: ${{ runner.os }}-playwright-${{ steps.playwright_version.outputs.version }}-${{ hashFiles('package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-playwright-
 
