@@ -17,7 +17,9 @@ jobs:
         id: node_modules
         uses: actions/cache@v4
         with:
-          path: node_modules
+          path: |
+            ~/.npm
+            node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
@@ -26,5 +28,5 @@ jobs:
         run: npm ci
       - name: Build app
         run: npm run build-only
-      - name: Run your tests
+      - name: Run playwright tests
         run: npx playwright test
