@@ -1,18 +1,18 @@
-name: Playwright Docker Tests
+name: 'Unit Tests'
+
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+
 jobs:
-  playwright_docker:
-    name: 'Playwright Docker Tests'
+  unit-test:
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.56.1-noble
-      options: --user 1001
+
     steps:
       - uses: actions/checkout@v5
+
       - name: Cache Node modules
         id: node_modules
         uses: actions/cache@v4
@@ -23,10 +23,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
       - name: Install dependencies
         if: steps.node_modules.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Build app
-        run: npm run build-only
-      - name: Run playwright tests
-        run: npx playwright test
+
+      - name: Run unit tests
+        run: npm run test:unit
